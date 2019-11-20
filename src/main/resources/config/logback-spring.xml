@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration debug="false" scan="true" scanPeriod="1 seconds">
+	<springProfile name="pro">
+		<!-- configuration to be enabled when the "dev" profile is active -->
+		<property name="log.path" value="/apps/log/shht/shht" />
+		<contextName>shht</contextName>
+		
+		<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+			<!-- <filter class="com.example.logback.filter.MyFilter" /> -->
+			<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+				<level>DEBUG</level>
+			</filter>
+			<encoder>
+				<pattern>%-4relative %d{yyyy-MM-dd HH:mm:ss.SSS}-[%thread] %highlight(%-5level) %cyan(%class)-%msg%n</pattern>  
+			</encoder>
+		</appender>
+
+		<appender name="file"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>${log.path}</file>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<fileNamePattern>${log.path}-%d{yyyy-MM-dd}.log</fileNamePattern>
+			</rollingPolicy>
+			<encoder>  
+            	<pattern>%-4relative %d{yyyy-MM-dd HH:mm:ss.SSS}-[%thread] %highlight(%-5level) %cyan(%class)-%msg%n</pattern>
+        	</encoder>  
+		</appender>
+
+		<root level="error">
+			<appender-ref ref="console" />
+		</root>
+
+		<logger name="com.grkj" level="debug" additivity="false" >
+			<appender-ref ref="file" />
+		</logger>
+		<logger name="com.ibatis" level="debug" additivity="false" >
+			<appender-ref ref="file" />
+		</logger>
+		<logger name="java.sql" level="debug" additivity="false" >
+			<appender-ref ref="file" />
+		</logger>
+		
+	</springProfile>
+
+	<springProfile name="dev">
+		<!-- configuration to be enabled when the "dev" profile is active -->
+		<property name="log.path" value="../logs/sxyc-prov-web" />
+		<contextName>sxyc-prov-web</contextName>
+		
+		<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+			<!-- <filter class="com.example.logback.filter.MyFilter" /> -->
+			<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+				<level>DEBUG</level>
+			</filter>
+			<encoder>
+				<pattern>%-4relative %d{yyyy-MM-dd HH:mm:ss.SSS}-[%thread] %highlight(%-5level) %cyan(%class)-%msg%n</pattern>  
+			</encoder>
+		</appender>
+
+		<appender name="file"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>${log.path}</file>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<fileNamePattern>${log.path}-%d{yyyy-MM-dd}.log</fileNamePattern>
+			</rollingPolicy>
+			<encoder>  
+            	<pattern>%-4relative %d{yyyy-MM-dd HH:mm:ss.SSS}-[%thread] %highlight(%-5level) %cyan(%class)-%msg%n</pattern>
+        	</encoder>  
+		</appender>
+
+		<root level="error">
+			<appender-ref ref="console" />
+		</root>
+
+		<logger name="com.grkj" level="debug" additivity="true" >
+		</logger> 
+		<logger name="com.ibatis" level="debug" additivity="true" />
+		<logger name="java.sql" level="debug" additivity="true" />
+
+	</springProfile>
+	
+
+</configuration>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.grkj.modules.code.dao.CodCommonMapper">
+  
+	
+	<select id="getModuleList" resultType="java.util.Map">
+		select module code,module name from COD_COMMON
+		<where>
+			 FLAG='1' and DELETE_FLAG='0' and module is not null
+			<if test="type !=null and type !='' ">
+			and type=#{type}
+			</if>
+			<if test="module !=null and module !='' ">
+			and module like '%${module}%'
+			</if>
+			<if test="parent !=null and parent !='' ">
+			and parent_id=#{parent} 
+			</if>
+			<if test="remark !=null and remark !='' ">
+			and remark like '%${remark}%'
+			</if>
+		</where>
+		 group by module order by sort+0
+	</select>
+	
+	<select id="getTypeList" resultType="java.util.Map">
+		select type code,type name from COD_COMMON where delete_flag='0' and module = #{module} group by type order by type
+	</select>
+	
+
+	
+</mapper>

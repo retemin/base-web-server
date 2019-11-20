@@ -1,0 +1,19 @@
+.vm-table-page {
+	padding: 5px;
+	border-bottom: solid 1px rgb(220, 222, 226);
+	border-left: solid 1px rgb(220, 222, 226);
+	border-right: solid 1px rgb(220, 222, 226);
+	text-align: center;
+}
+
+.vm-table .ivu-table th, .vm-table .ivu-table td {
+	height: 36.2px;
+}
+
+.ivu-menu-primary .ivu-menu-item-selected{
+	color: #ffffff!important;
+}
+
+.ivu-menu-primary .ivu-menu-item-selected:hover{
+	color: #2d8cf0!important;
+}

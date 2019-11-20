@@ -1,0 +1,112 @@
+body,
+html {
+	font-size: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+/* Reset */
+*,
+*:after,
+*:before {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/* Clearfix hack by Nicolas Gallagher: http://nicolasgallagher.com/micro-clearfix-hack/ */
+.clearfix:before,
+.clearfix:after {
+	content: " ";
+	display: table;
+}
+
+.clearfix:after {
+	clear: both;
+}
+
+body {
+	font-family: "Microsoft YaHei";
+}
+
+
+html,
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.satic-area {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background: url(../images/poster-about.jpg) no-repeat center;
+	background-size: 100% 100%;
+}
+
+.dynamic-area1 {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: url(../images/poster-drop-animate2.png) repeat-x 0px 0px;
+	background-size: cover;
+	animation: posterDrop1 6000s linear infinite;
+}
+
+@keyframes posterDrop1 {
+	from {
+		background-position: 0 0;
+	}
+
+	to {
+		background-position: 4000% 0;
+	}
+}
+
+.dynamic-area2 {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: url(../images/poster-drop-animate1.png) repeat-x 0px 0px;
+	background-size: cover;
+	animation: posterDrop2 8000s linear infinite;
+}
+
+@keyframes posterDrop2 {
+	from {
+		background-position: 0 0;
+	}
+
+	to {
+		background-position: 30000% 0;
+	}
+}
+
+
+/* 雾霾 */
+/* .dynamic-area1 {
+	position: absolute;
+	width: 100000px;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: url(../images/乌云.png) repeat-x 0px 0px;
+	background-size: cover;
+	animation: posterDrop1 60000000s linear infinite;
+} */
+
+@keyframes posterDrop3 {
+	from {
+		background-position: 0 0;
+	}
+
+	to {
+		background-position: 400000% 0;
+	}
+}

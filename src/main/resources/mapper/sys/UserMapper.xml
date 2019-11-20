@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.grkj.modules.sys.mapper.UserMapper">
+  
+  <update id="updateUsersOffice">
+  	update sys_user  set office_id=#{officeId} where id in
+  	<foreach  open="(" close=")" collection="userIds" item="item" index="index" separator="," >
+  		#{item}
+  	</foreach>
+  </update>
+</mapper>

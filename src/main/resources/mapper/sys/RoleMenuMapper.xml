@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.grkj.modules.sys.mapper.RoleMenuMapper">
+
+    <select id="getMenuListByRoleId" parameterType="java.lang.String" resultType="com.grkj.modules.sys.entity.Menu" >
+	SELECT
+    	m.*
+	FROM
+    	sys_role  r,
+    	sys_role_menu  rm,
+    	sys_menu  m
+	WHERE
+    	r.id = rm.role_id
+    	AND rm.menu_id = m.id
+    	AND m.flag = 1
+    	AND r.id=#{roleId} 
+    order by m.sort		
+  </select>
+  
+  <select id="getRoleListByMenuId" parameterType="java.lang.String" resultType="com.grkj.modules.sys.entity.Role" >
+	SELECT
+    	r.*
+	FROM
+    	sys_role  r,
+    	sys_role_menu  rm,
+    	sys_menu  m
+	WHERE
+    	r.id = rm.role_id
+    	AND rm.menu_id = m.id
+    	AND r.flag = 1
+    	AND m.id=#{menuId} 
+    order by r.id		
+  </select>
+  
+  <insert id="insertRoleMenuByRoleId" parameterType="java.lang.String">
+  		INSERT INTO sys_role_menu(role_id,menu_id)
+  		SELECT #{roleId},id FROM sys_menu where id in 
+  		<foreach  open="(" close=")" collection="menuIds" item="item" index="index" separator="," >
+  			#{item}
+  		</foreach>
+  </insert>
+  
+  <insert id="insertRoleMenuByMenuId" parameterType="java.lang.String">
+  		INSERT INTO sys_role_menu(menu_id,role_id)
+  		SELECT #{menuId},id FROM sys_role where id in 
+  		<foreach  open="(" close=")" collection="roleIds" item="item" index="index" separator="," >
+  			#{item}
+  		</foreach>
+  </insert>
+  
+  <delete id="deleteRoleMenuByRoleId" parameterType="java.lang.String">
+  		DELETE FROM sys_role_menu WHERE role_id=#{roleId}
+  </delete>
+  
+  <delete id="deleteRoleMenuByMenuId" parameterType="java.lang.String">
+  		DELETE FROM sys_role_menu WHERE menu_id=#{menuId}
+  </delete>
+</mapper>

@@ -1,0 +1,91 @@
+.btn-info,.btn-success {
+    background-color: #fda720;
+    border-color: #fda720;
+    color: #FFFFFF;
+}
+.btn-primary{
+    background-color: #31cb59;
+    border-color: #31cb59;
+    color: #FFFFFF;
+}
+.btn-info:hover,.btn-success:hover,.btn-primary:hover {
+    background-color: #0f83e0;
+    border-color: #0f83e0;
+    color: #FFFFFF;
+}
+
+/*20160624新增*/
+.btn-primary.active.focus,.btn-primary.active:focus,.btn-primary.active:hover,.btn-primary:active.focus,.btn-primary:active:focus,.btn-primary:active:hover,.open>.dropdown-toggle.btn-primary.focus,.open>.dropdown-toggle.btn-primary:focus,.open>.dropdown-toggle.btn-primary:hover{color:#fff;background-color:#0f83e0;border-color:#0f83e0}
+.btn-success.active.focus,.btn-success.active:focus,.btn-success.active:hover,.btn-success:active.focus,.btn-success:active:focus,.btn-success:active:hover,.open>.dropdown-toggle.btn-success.focus,.open>.dropdown-toggle.btn-success:focus,.open>.dropdown-toggle.btn-success:hover{color:#fff;background-color:#0f83e0;border-color:#0f83e0}
+.list_u {
+	margin-top: 10px;
+}
+
+.ui-jqgrid .ui-jqgrid-titlebar {
+	padding-top: 2px;
+	background-color: #0f83e0;
+	color: #FFF;
+	font-size: 14px;
+	font-weight: normal;
+}
+/*20160624复盖bootstrap白色底*/
+body {
+    background-color: #f9f9f9;
+}
+/*20160624表格原来居中改为左对齐*/
+.ui-th-column,.ui-th-ltr {
+		text-align: left;
+	}
+	
+/*20160627新增*/
+.list_u1 {
+	margin-top: 2px;	
+	margin-left: 10px;
+}
+/*20160627复盖*/
+.ibox-content {
+	padding-top: 0px;
+}
+
+.layui-layer-lan .layui-layer-title {
+    background: #0f83e0;
+    color: #fff;
+    border: none;
+}
+
+
+.nav-tabs{
+	background-color: white;
+	padding-top: 4px;
+}
+.nav-tabs>li:first-child{
+	margin-left: 30px;
+}
+.nav-tabs>li>a{
+	height: 38px;
+	border-radius:0 0 0 0;
+}
+.nav-tabs>li.active>a{
+	border-top:3px solid #0f83e0;
+	color: #0f83e0;
+	border-radius ： none;
+}
+
+.nav-tabs>li.active>a:hover{
+	border-top:3px solid #31cb59;
+	color: #31cb59;
+}
+
+body {
+ 	font-family: "Microsoft YaHei" ! important; 
+ 	color: #000000;
+}  
+*:not(.glyphicon,.ui-icon) {
+ 	font-family: "Microsoft YaHei" ! important;
+ 	 
+}  
+ code {
+ 	font-family: "Consolas" ! important;
+ }
+ 
+ 

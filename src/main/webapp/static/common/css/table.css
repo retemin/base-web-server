@@ -1,0 +1,71 @@
+@CHARSET "UTF-8";
+/**
+ binzec  
+ 表单样式
+ */
+/* 表单页面标题 */
+.formTitle {
+	text-align: center;
+	margin-top: -5px;
+	font-weight: bold;
+}
+/* 表单业务状态显示 */
+.warm {
+	color: green;
+	font-weight: bold;
+	text-align: center;
+}
+/* 无输入框内容 */
+.text {
+	text-align: center;
+}
+/* 各内容名称 */
+.title {
+	text-align: right;
+	font-weight: bold;
+}
+/* table样式 */
+.infoTable {
+	padding: 11px;
+	margin-top: -1px;
+	border: 1px;
+	width: 100%;
+}
+/* 各行样式 */
+.infoTable tr {
+	background-color: #FFFFFF;
+}
+/* 各单元格样式 */
+.infoTable td {
+	border: 1px solid #ddd;
+	height: 40px;
+	font-size: 13px;
+	padding: 3px;
+	margin: 3px;
+}
+/* 大标题 */
+.infoTable .bigHeading {
+	background: #F1F1F1;
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+	height: 32px;
+}
+/* 小标题 */
+.infoTable .heading {
+	background: #F5F5F5;
+	font-size: 15px;
+	font-weight: bold;
+	text-align: left;
+	height: 30px;
+}
+/* 多选框样式 */
+.infoTable input[type='checkbox'] {
+	width: 18px;
+	height: 18px;
+}
+/* 单选框样式 */
+.infoTable input[type='radio'] {
+	width: 18px;
+	height: 18px;
+}

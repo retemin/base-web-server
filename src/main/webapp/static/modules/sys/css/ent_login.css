@@ -1,0 +1,81 @@
+body{
+	background:rgb(10,99,161);
+	overflow:hidden;
+	height:100%;
+}
+#bg01{
+	width:100%;
+	height: 100%;
+	margin:0 auto;
+	background:url(../images/bg.jpg);
+	background-position:center;
+}
+#logo{
+	width:1240px;
+	height:82px;
+	margin: 45px auto;
+	padding-left:120px;
+}
+#white{
+	width:100%;
+	height:265px;
+	background:white;
+	margin-top:90px;
+}
+#center_bg{
+	width:100%;
+	height:321px;
+	background:url(../images/demo2.png);
+	margin-top:90px;
+}
+
+#white02{
+	width:1240px;
+	height:265px;
+	margin:0 auto;
+}
+#inform{
+	width: 629px;
+	height:265px;
+	background:white;
+	float:left;
+	margin-left: 0px;
+}
+#inform h3{
+	margin-top:35px;
+	margin-bottom:15px;
+}
+#bg02{
+	width: 629px;
+	height:188px;
+	border-top:1px solid black;
+	background:url(../images/bg02.jpg);
+}
+#bg02 li{
+	margin-top:20px;
+	margin-left: 5px;
+	height:10px;
+	list-style-type:none;
+	clear:both;
+}
+#bg02 li h4{
+	float:left;
+	margin-left:10px;
+}
+#bg02 li img{
+	float:left;
+	margin:4px 0;
+}
+#login{
+	width:410px;
+	height:333px;
+	float:right;
+	margin-right:100px;
+	margin-top:-33px; 
+	background:url(../images/login.png); 
+}
+#form{
+	margin-top: 100px;
+	margin-left:50px;
+}
+

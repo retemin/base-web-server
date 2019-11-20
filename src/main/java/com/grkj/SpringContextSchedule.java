@@ -1,0 +1,1 @@
+package com.grkj;import org.springframework.context.annotation.Configuration;import org.springframework.context.annotation.Import;import com.grkj.lib.schedule.configuration.ManagedTaskSchedulerAutoConfiguration;@Configuration@Import(ManagedTaskSchedulerAutoConfiguration.class)public class SpringContextSchedule {}

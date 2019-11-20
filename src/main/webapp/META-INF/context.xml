@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context>
+	<Resource name="JDBC/SHHB"
+      auth="Container"
+      type="javax.sql.DataSource"
+      factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+      testWhileIdle="true"
+      testOnBorrow="true"
+      testOnReturn="false"
+      validationInterval="3000"
+	  validationQuery="SELECT 1 from dual" 
+      timeBetweenEvictionRunsMillis="5000"
+	  maxActive="50"
+      minIdle="5"
+      maxWait="60000"
+      initialSize="5"
+      removeAbandonedTimeout="5"
+      removeAbandoned="false"
+      logAbandoned="false"
+      minEvictableIdleTimeMillis="60000"
+      jmxEnabled="false" 
+      username="SHHT"
+      password="SHHT.2018"
+      driverClassName="oracle.jdbc.OracleDriver"
+      url="jdbc:oracle:thin:@192.168.3.203:1521:orcl"
+      
+	  /> 
+	  <!-- url="jdbc:dm://10.10.8.252:5236?comOra=true" -->   <!-- 公司 -->
+</Context>			  

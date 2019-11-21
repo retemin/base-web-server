@@ -15,7 +15,7 @@
     </jsp:include>
 
     <script type="text/javascript" src="${ctx}/excel/jqgrid/jqgrid-excel.js"></script>
-    <title>用户列表</title>
+    <title>企业信息列表</title>
     <style type="text/css">
         #searchForm {
             margin-bottom: 5px;
@@ -74,14 +74,18 @@
                 rowList : [10, 20, 50, 100],
                 mtype : "get",
                 //height:height,
-                colNames : ["ID","登录名", "用户名","部门","手机", "是否可用", "操作"],
+                colNames : ["ID","企业名称", "行业类别","所属区域","重点级别","联系人","联系电话","运维单位名称","更新时间", "是否可用", "操作"],
                 colModel : [
-                    {name: "id",index: "id",align: "center",width: 80,hidden: true},
-                    {name: "loginName",index: "login_name",align: "center",width: 80},
-                    {name: "name",index: "name",align: "center",width: 80},
-                    {name: "officeName",index: "officeName",align: "center",width: 100},
-                    {name: "mobile",index: "mobile",align: "center",width: 100},
-                    {name: "flag",index: "flag",align: "center",width: 80,
+                    {name: "id",index: "id",align: "center",width: 100,hidden: true},
+                    {name: "name",index: "name",align: "center",width: 70},
+                    {name: "type",index: "type",align: "center",width: 70},
+                    {name: "area",index: "area",align: "center",width: 70},
+                    {name: "importantLevel",index: "importantLevel",align: "center",width: 70},
+                    {name: "contactor",index: "contactor",align: "center",width: 70},
+                    {name: "phone",index: "phone",align: "center",width: 70},
+                    {name: "operation",index: "operation",align: "center",width: 70},
+                    {name: "updateTime",index: "updateTime",align: "center",width: 70},
+                    {name: "flag",index: "flag",align: "center",width: 70,
                         formatter:function(cellValue,options,rowObject){
                             var statusIcon="<i class=\"fa fa-"+(cellValue==1?"check-circle text-primary":"minus-circle text-warning")+"\"></i>";
                             return statusIcon;

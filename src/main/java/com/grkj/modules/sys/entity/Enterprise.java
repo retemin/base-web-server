@@ -5,7 +5,7 @@ import javax.persistence.Id;
 * @Author: retemin
 * @Date: 2019/11/20
 */
-public class SysEnterprise {
+public class Enterprise {
 
   /** 主键 */
   @Id

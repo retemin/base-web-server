@@ -36,8 +36,8 @@ import com.grkj.modules.sys.service.UserService;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
-@Service
-public class UserServiceImpl implements BaseMapperCurdService<User>, UserService,InitializingBean{
+	@Service
+	public class UserServiceImpl implements BaseMapperCurdService<User>, UserService,InitializingBean{
 	
 	public static final String ITEM_CACHE_LOGINNAME_KEY="CACHE_LOGINNAME_ID";
 	public static final String ITEM_CACHE_ID_KEY="CACHE_ID_USER";

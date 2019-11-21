@@ -1,12 +1,16 @@
 package com.grkj.modules.sys.entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
+
 /**
 * @Description:   企业基本信息的entity类
 * @Author: retemin
 * @Date: 2019/11/20
 */
-public class Enterprise {
-
+@Table(name="SYS_ENTERPRISE")
+public class Enterprise implements Serializable {
+  public static final long serialVersionUID = 1L;
   /** 主键 */
   @Id
   private String id;

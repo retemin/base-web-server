@@ -28,7 +28,7 @@ public class SysConfigService  implements BaseMapperCurdService<SysConfig>{
 	
 	@Autowired
 	private SysConfigMapper mapper;
-	
+
 	@Override
 	public List<SysConfig> getList(Object param) {
 		// TODO Auto-generated method stub

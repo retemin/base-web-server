@@ -70,22 +70,22 @@
 
             tableObj=$("#dataTable").jqGrid({
                 datatype : "json",
-                url : "${ctx}/sys/user/jqgrid",
+                url : "${ctx}/sys/enterprise/jqgrid",
                 rowList : [10, 20, 50, 100],
                 mtype : "get",
                 //height:height,
                 colNames : ["ID","企业名称", "行业类别","所属区域","重点级别","联系人","联系电话","运维单位名称","更新时间", "是否可用", "操作"],
                 colModel : [
-                    {name: "id",index: "id",align: "center",width: 100,hidden: true},
-                    {name: "name",index: "name",align: "center",width: 70},
-                    {name: "type",index: "type",align: "center",width: 70},
-                    {name: "area",index: "area",align: "center",width: 70},
-                    {name: "importantLevel",index: "importantLevel",align: "center",width: 70},
+                    {name: "id",index: "id",align: "center",width: 20,hidden: true},
+                    {name: "name",index: "name",align: "center",width: 120},
+                    {name: "type",index: "type",align: "center",width: 60},
+                    {name: "area",index: "area",align: "center",width: 60},
+                    {name: "importantLevel",index: "importantLevel",align: "center",width: 50},
                     {name: "contactor",index: "contactor",align: "center",width: 70},
                     {name: "phone",index: "phone",align: "center",width: 70},
                     {name: "operation",index: "operation",align: "center",width: 70},
                     {name: "updateTime",index: "updateTime",align: "center",width: 70},
-                    {name: "flag",index: "flag",align: "center",width: 70,
+                    {name: "flag",index: "flag",align: "center",width: 60,
                         formatter:function(cellValue,options,rowObject){
                             var statusIcon="<i class=\"fa fa-"+(cellValue==1?"check-circle text-primary":"minus-circle text-warning")+"\"></i>";
                             return statusIcon;
@@ -326,9 +326,6 @@
         <div class="form-group">
             <input class="form-control input-sm" id="search_loginName" placeholder="登录名">
         </div>
-        <div class="form-group" style="display: none;">
-            <input class="form-control input-sm" id="search_name" placeholder="用户名">
-        </div>
         <div class="form-group">
             <div class="input-group">
                 <input id="search_officeId" class="form-control hidden input-sm">
@@ -342,7 +339,7 @@
         </div>
         <div class="form-group">
             <select class="form-control input-sm" style="width: 140px" id="search_type" >
-                <option value="" disabled selected>用户类型</option>
+                <option value="" disabled selected>全部</option>
                 <option value="1">管理员</option>
                 <option value="2">环保用户</option>
                 <option value="3">企业用户</option>
@@ -356,10 +353,6 @@
         <a id="newUser" class="btn btn-success">
             <span class="glyphicon glyphicon-plus"></span> 添加
         </a>
-
-        <button id="export" type="button" class="btn btn-warning">
-            <span class="glyphicon glyphicon-search"></span> 导出
-        </button>
     </form>
 </div>
 <div class="col-xs-12 jqgrid-table">

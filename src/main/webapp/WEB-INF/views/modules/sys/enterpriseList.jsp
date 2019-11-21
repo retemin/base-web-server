@@ -97,15 +97,15 @@
                             var name = rowObject.name;
                             var flag= rowObject.flag;
                             var button = "<a href='javascript:void(0);' class='text-info' onclick=\"openForm('"+pkid+"')\">[<span class=\"fa fa-edit fa-fw\" aria-hidden=\"true\"></span>修改] </a>";
-                            button +="<a href='javascript:void(0);' class='text-success' onclick=\"bindRole('"+pkid+"','"+name+"')\">[<span class=\"fa fa-edit fa-fw\" aria-hidden=\"true\"></span>绑定角色] </a>";
+
+                            //删除按钮
+                            button += "<a href='javascript:void(0);' class='text-danger' onclick=\"deleteItem('"+pkid+"','"+name+"')\">[<span class=\"fa fa-trash fa-fw\" aria-hidden=\"true\"></span>删除] </a>";
                             if(flag==1){
                                 button += "<a href='javascript:void(0);' class='text-warning' onclick=\"updateFlag('"+pkid+"','"+name+"',0)\">[<span class=\"fa fa-ban fa-fw\" aria-hidden=\"true\"></span>禁用] </a>";
                             }else{
                                 button += "<a href='javascript:void(0);' class='text-primary' onclick=\"updateFlag('"+pkid+"','"+name+"',1)\">[<span class=\"fa fa-check-circle-o fa-fw\" aria-hidden=\"true\"></span>启用] </a>";
                             }
-                            //删除按钮
-                            button += "<a href='javascript:void(0);' class='text-danger' onclick=\"deleteItem('"+pkid+"','"+name+"')\">[<span class=\"fa fa-trash fa-fw\" aria-hidden=\"true\"></span>删除] </a>";
-
+                            button += "<a href='javascript:void(0);' class='text-primary' onclick=\"ManagerItem('"+pkid+"','"+name+"')\">[<span class=\"fa fa-cog fa-fw\" aria-hidden=\"true\"></span>排口管理] </a>";
                             return button;
                         }
                     }
@@ -176,10 +176,10 @@
 
         function updateFlag(itemId,name,flag){
             var opName=flag==1?"启用":"禁用";
-            layer.confirm("确定"+opName+"用户:"+name+"?",function(index){
+            layer.confirm("确定"+opName+"企业信息:"+name+"?",function(index){
                 layer.close(index);
                 var loadingIndex=layer.loadingWithText("正在提交数据");
-                $.post(_ctx+"/sys/user/updateFlag/"+itemId,{'flag':flag},function(msg){
+                $.post(_ctx+"/sys/enterprise/updateFlag/"+itemId,{'flag':flag},function(msg){
                     layer.close(loadingIndex);
                     if(msg.status==1){
                         layer.success("已经成功"+opName+"用户:"+name);
@@ -191,18 +191,20 @@
             });
 
         }
+        function ManagerItem(){
 
-        function deleteItem(itemId,name){
-            layer.confirm("确定删除用户:<span class='text-success'>"+name+"</span>?<p class='text-danger' >(删除后将无法恢复，暂停使用请使用<span  class='text-warning'>[<span class=\"fa fa-ban \" aria-hidden=\"true\"></span>禁用] </span>)<p>",function(index){
+        }
+        function deleteItem(itemId){
+            layer.confirm("确定删除用户:<span class='text-success'>"+name+"</span>?<p class='text-danger' >(删除后将无法恢复，确定要删除么？<span  class='text-warning'>[<span class=\"fa fa-ban \" aria-hidden=\"true\"></span>禁用] </span>)<p>",function(index){
                 layer.close(index);
                 var loadingIndex=layer.loadingWithText("正在提交数据");
-                $.post(_ctx+"/sys/user/delete/"+itemId,{},function(msg){
+                $.post(_ctx+"/sys/enterprise/delete/"+itemId,{},function(msg){
                     layer.close(loadingIndex);
                     if(msg.status==1){
-                        layer.success("已经成功删除用户:"+name);
+                        layer.success("已经成功删除企业信息:"+name);
                         tableObj.trigger("reloadGrid");
                     }else{
-                        layer.error("删除用户失败："+msg.message);
+                        layer.error("删除企业信息失败："+msg.message);
                     }
                 });
             });
@@ -215,105 +217,18 @@
         }
 
         function openForm(id){
-            url=_ctx+"/sys/user/form/"+(id?id:"");
+            url=_ctx+"/sys/enterprise/form/"+(id?id:"");
             top.layer.open({
                 type: 2,
-                title: [(id?"编辑":"新建")+"用户","font-size:18px;"],
+                title: [(id?"编辑":"新建")+"企业基础信息","font-size:18px;"],
                 content:url,
-                area: ["1024px", "500px"],
+                area: ["1024px", "600px"],
                 closeBtn : 2,
                 end :function(){
                     tableObj.trigger("reloadGrid");
                 }
 
             });
-        }
-
-        function bindRole(id,name){
-            $("#roleListFrame").data("userId",id);
-            $("#roleListFrame>.list-group input[type='checkbox']").prop("checked",false);
-            loadUserRole(id);
-            var index=layer.open({
-                type: 1,
-                title: ["绑定用户["+name+"]的角色","font-size:18px;"],
-                content:$("#roleListFrame"),
-                area: ["40%", "80%"],
-                closeBtn : 2,
-                end :function(){
-                    //tableObj.trigger("reloadGrid");
-                }
-
-            });
-            $("#roleListFrame").data("layerIndex",index);
-
-        }
-
-        function loadRoleList(){
-            $.get(_ctx+"/sys/role/availableListData",{},function(msg){
-                if(msg.status==1){
-                    for(var i in msg.data){
-                        var item=msg.data[i];
-                        var a="<a class=\"list-group-item\"><input type=\"checkbox\" value="+item.id+">"+item.name+"</a>";
-                        $("#roleListFrame>.list-group").append(a);
-                    }
-                }
-            })
-        }
-
-        function loadUserRole(userId){
-            var index =layer.loadingWithText("正在加载用户角色信息");
-            if(userId){
-                $.get(_ctx+"/sys/role/userRole/"+userId,{},function(msg){
-
-                    if(msg.status==1){
-                        for(var i in msg.data){
-                            var item=msg.data[i];
-                            $("#roleListFrame>.list-group input[type='checkbox'][value="+item.id+"]").click();
-                        }
-                    }else{
-                        layer.error("加载用户角色信息失败:"+msg.message);
-                    }
-                    layer.close(index);
-                });
-            }
-
-        }
-
-        function changeRole(){
-
-            var userId=$("#roleListFrame").data("userId");
-            var frameIndex=$("#roleListFrame").data("layerIndex");
-            if(userId){
-                var loadingIndex = layer.loadingWithText("正在保存用户角色信息") ;
-                var roleIds=[];
-                $("#roleListFrame>.list-group>.list-group-item>input[type='checkbox'][value]").each(function(){
-                    if($(this).prop("checked")){
-                        roleIds.push($(this).val());
-                    }
-                });
-                var json=JSON.stringify(roleIds);
-                $.ajax({
-                    url : _ctx + "/sys/role/saveUserRole/"+userId,
-                    data : json,
-                    type : "post",
-                    contentType : "application/json",
-                    success : function(msg) {
-                        layer.close(loadingIndex);
-                        if(msg.status==1){
-                            layer.success("保存成功");
-                        }else{
-                            layer.error("保存失败："+msg.message);
-                        }
-                        layer.close(frameIndex);
-                    },
-                    error : function(msg) {
-                        layer.close(loadingIndex);
-                        layer.error("保存失败："+msg);
-                        layer.close(frameIndex);
-                    }
-                });
-            }
-
         }
 
     </script>

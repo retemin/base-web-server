@@ -55,5 +55,10 @@ public class EnterpriseController implements BaseRestfulController<Enterprise>{
             data.setId(keyGenerator.getNext());
         }
     }
+    @RequestMapping(value = "/updateFlag/{id}", method = RequestMethod.POST)
+    public ResponseMessage save(@PathVariable String id, String flag) {
+        service.updateFlag(id, flag);
+        return ResponseMessage.newOkInstance(id);
+    }
 
 }

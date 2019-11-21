@@ -51,5 +51,15 @@ public class EnterpriseServiceImpl implements BaseMapperCurdService<Enterprise>,
     public Mapper<Enterprise> getMapper() {
         return mapper;
     }
+
+    //修改启用状态
+    @Override
+    public void updateFlag(String id, String flag) {
+        // TODO Auto-generated method stub
+        Enterprise enterprise=new Enterprise();
+        enterprise.setId(id);
+        enterprise.setFlag(flag);
+        updateSelective(enterprise);
+    }
 }
 

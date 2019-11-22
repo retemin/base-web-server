@@ -1,21 +1,31 @@
 package com.grkj.modules.sys.serviceImpl;
 
+import com.google.common.collect.Lists;
+import com.grkj.common.base2.impl.controller.BaseCurdListController;
 import com.grkj.common.base2.impl.service.BaseMapperCurdService;
+import com.grkj.lib.message.entity.ResponseMessage;
 import com.grkj.lib.utils.MapRemoveNullUtil;
+import com.grkj.lib.utils.StringUtils;
 import com.grkj.modules.sys.entity.Enterprise;
 import com.grkj.modules.sys.entity.SysConfig;
 import com.grkj.modules.sys.entity.User;
 import com.grkj.modules.sys.mapper.EnterpriseMapper;
 import com.grkj.modules.sys.service.EnterpriseService;
-import org.apache.commons.lang3.StringUtils;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static com.grkj.common.base2.impl.controller.BaseWriterController.SaveType.insert;
 
 /**
  * @program: base-web-server
@@ -41,8 +51,36 @@ public class EnterpriseServiceImpl implements BaseMapperCurdService<Enterprise>,
         @SuppressWarnings("unchecked")
         //Map<String,Object> paramMap=(Map<String,Object>)param;
         Example example=new Example(Enterprise.class);
-        //Example.Criteria cr = example.createCriteria();
-        //String id=(String) paramMap.get("id");
+        if(param!=null){
+            //添加查询条件
+            Example.Criteria cr = example.createCriteria();
+            Map<String,Object> paramMap=(Map<String, Object>) param;
+            String id=(String) paramMap.get("id");
+            String name=(String) paramMap.get("name");
+            String type=(String) paramMap.get("type");
+            String area=(String) paramMap.get("area");
+            String operation=(String) paramMap.get("operation");
+            String importantLevel=(String) paramMap.get("importantLevel");
+            if(!StringUtils.isBlank(id)){
+                cr.andLike("id", "%"+id+"%");
+            }
+            //如果字段不为空
+            if(!StringUtils.isBlank(name)){
+                cr.andLike("name", "%"+name+"%");
+            }
+            if(!StringUtils.isBlank(name)){
+                cr.andLike("operation", "%"+operation+"%");
+            }
+            if(!StringUtils.isBlank(type)){
+                cr.andLike("type", "%"+type+"%");
+            }
+            if(!StringUtils.isBlank(area)){
+                cr.andEqualTo("area", area);
+            }
+            if(!StringUtils.isBlank(importantLevel)){
+                cr.andEqualTo("importantLevel", importantLevel);
+            }
+        }
         return mapper.selectByExample(example);
     }
 
@@ -59,7 +97,18 @@ public class EnterpriseServiceImpl implements BaseMapperCurdService<Enterprise>,
         Enterprise enterprise=new Enterprise();
         enterprise.setId(id);
         enterprise.setFlag(flag);
+        String string = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString();
+        enterprise.setUpdateTime(string);
         updateSelective(enterprise);
     }
+
+    @Override
+    public void updateTime(Enterprise enterprise) {
+        String string = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString();
+        enterprise.setUpdateTime(string);
+        insertOrUpdate(enterprise);
+    }
+
+
 }
 

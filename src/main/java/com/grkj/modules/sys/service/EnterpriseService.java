@@ -6,4 +6,5 @@ import com.grkj.modules.sys.entity.Enterprise;
 
 public interface EnterpriseService extends CurdService<Enterprise> {
     void updateFlag(String id, String flag);
+    void updateTime(Enterprise enterprise);
 }

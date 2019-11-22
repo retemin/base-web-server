@@ -87,7 +87,8 @@
                     {name: "updateTime",index: "updateTime",align: "center",width: 70},
                     {name: "flag",index: "flag",align: "center",width: 60,
                         formatter:function(cellValue,options,rowObject){
-                            var statusIcon="<i class=\"fa fa-"+(cellValue==1?"check-circle text-primary":"minus-circle text-warning")+"\"></i>";
+                            // var statusIcon = "<input class='easyui-switchbutton' onText='开' offText='关' name='unitState' >";
+                            var statusIcon="<i class=\"fa fa-"+(cellValue==1?"toggle-on text-primary":"toggle-off text-warning")+"\"></i>";
                             return statusIcon;
                         }
                     },
@@ -125,34 +126,36 @@
                 },
                 sortname:"id"
             });
+
             resizeWindow();
             $(window).on("resize",resizeWindow);
-            $("#newUser").click(function(){
+
+            //點擊新增的時候打開彈框頁面
+            $("#newEnterprise").click(function(){
                 openForm();
             });
-
+            //搜索点击按钮
             $("#searchForm").submit(function(e){
                 e.preventDefault();
                 $("#searchForm").submit(function(e){
                     e.preventDefault();
+                    //搜索id
                     var id = $("#search_id").val();
-                    var loginName = $("#search_loginName").val();
+                    //搜索名字
                     var name = $("#search_name").val();
-                    var officeId = $("#search_officeId").val();
+                    //搜索类别
                     var type = $("#search_type").val();
-                    console.log("loginName:"+loginName);
-                    tableObj.setGridParam({postData:{'id':id,'loginName':loginName,'name':name,'officeId':officeId,'type':type},page:1});
+                    //搜索所属区域
+                    var  area =  $("#search_area").val();
+                    //搜索重点级别
+                    var importantLevel = $("#search_importantLevel").val();
+                    //搜索运维单位名称
+                    var operation = $("#search_operation").val();
+                    //console.log("loginName:"+loginName);
+                    //绑定搜索数据
+                    tableObj.setGridParam({postData:{'id':id,'name':name,'type':type,'area':area,'importantLevel':importantLevel,"opeartion":operation},page:1});
                     tableObj.trigger("reloadGrid");
                 });
-            });
-            loadRoleList();
-
-            $("#roleListFrame").on('click',".list-group>.list-group-item",function(){
-                $(this).children("input[type='checkbox']").click();
-            });
-
-            $("#roleListFrame").on('click',".list-group>.list-group-item>input",function(e){
-                e.stopPropagation();//阻止冒泡
             });
 
             $("#selectDepartmentBtn").click(function(){
@@ -165,12 +168,6 @@
                         $("#search_officeName").val(selectData.name);
                     }
                 });
-            });
-
-            $("#changeRole").click(changeRole);
-
-            $("#export").click(function(){
-                jqgridExportUtil.exportExcelWithDataRule(tableObj,"用户列表");
             });
         });
 
@@ -238,34 +235,64 @@
 <body class="">
 <div class="col-xs-12 search-form">
     <form action="" class="form form-inline " id="searchForm" >
-        <div class="form-group">
-            <input class="form-control input-sm" id="search_loginName" placeholder="登录名">
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <input id="search_officeId" class="form-control hidden input-sm">
-                <input id="search_officeName" class="form-control input-sm" style="width: 130px;" readonly="readonly" placeholder="部门">
-                <span class="input-group-btn">
-							<button class="btn btn-info" type="button" id="selectDepartmentBtn">
-								<i class="glyphicon glyphicon-search"></i>
-							</button>
-						</span>
+        <%--<div class="form-group">--%>
+            <%--<label class="col-sm-4 control-label text-right">作用域:</label>--%>
+            <%--<div class="col-sm-8"><vm-select v-model="search.scope" :options="code.scope"/></div>--%>
+        <%--</div>--%>
+        <%--<div class="col-md-3">--%>
+            <%--<label class="col-sm-4 control-label text-right">参数名:</label>--%>
+            <%--<div class="col-sm-8"><vm-input v-model="search.config"></div>--%>
+        <%--</div>--%>
+            <div class="form-group">
+                <label>所属区域:</label>
+                <select class="form-control input-sm" style="width: 140px" id="search_area" >
+                    <option value=""  selected>全部</option>
+                    <option value="黄埔">黄埔</option>
+                    <option value="天河">天河</option>
+                    <option value="越秀">越秀</option>
+                </select>
             </div>
-        </div>
+            <div class="form-group">
+                <label>重点级别:</label>
+                <select class="form-control input-sm" style="width: 100px" id="search_importantLevel" >
+                    <option value=""  selected>全部</option>
+                    <option value="国控">国控</option>
+                    <option value="省控">省控</option>
+                    <option value="市控">市控</option>
+                    <option value="其他">其他</option>
+                </select>
+            </div>
         <div class="form-group">
-            <select class="form-control input-sm" style="width: 140px" id="search_type" >
-                <option value="" disabled selected>全部</option>
-                <option value="1">管理员</option>
-                <option value="2">环保用户</option>
-                <option value="3">企业用户</option>
-            </select>
+            <label>企业名称:</label>
+            <input class="form-control input-sm"  style="width: 120px;" id="search_name" >
         </div>
+            <div class="form-group">
+                <label>行业类别:</label>
+                <input class="form-control input-sm"  style="width: 120px;" id="search_type" >
+            </div>
+            <div class="form-group">
+                <label>运维单位名称:</label>
+                <input class="form-control input-sm"  style="width: 120px;" id="search_operation" >
+            </div>
+            <%--注释的是部门的搜索按钮--%>
+        <%--<div class="form-group">--%>
+            <%--<div class="input-group">--%>
+                <%--<input id="search_officeId" class="form-control hidden input-sm">--%>
+                <%--<input id="search_officeName" class="form-control input-sm" style="width: 130px;" readonly="readonly" placeholder="部门">--%>
+                <%--<span class="input-group-btn">--%>
+							<%--<button class="btn btn-info" type="button" id="selectDepartmentBtn">--%>
+								<%--<i class="glyphicon glyphicon-search"></i>--%>
+							<%--</button>--%>
+						<%--</span>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+
 
         <button id="search" type="submit" class="btn btn-warning">
             <span class="glyphicon glyphicon-search"></span> 搜索
         </button>
 
-        <a id="newUser" class="btn btn-success">
+        <a id="newEnterprise" class="btn btn-success">
             <span class="glyphicon glyphicon-plus"></span> 添加
         </a>
     </form>

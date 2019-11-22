@@ -17,20 +17,20 @@
         form{
             margin-top:8px;
         }
-        .col-sm-3 {
-            width: 25%;
-            position: relative;
-            min-height: 2px;
-            padding-right: 5px;
-            padding-left: 6px;
-        }
-        .magic-radio + label, .magic-checkbox + label {
-            position: relative;
-            display: block;
-            padding-left: 24px;
-            cursor: pointer;
-            vertical-align: middle;
-        }
+        /*.col-sm-3 {*/
+            /*width: 25%;*/
+            /*position: relative;*/
+            /*min-height: 2px;*/
+            /*padding-right: 5px;*/
+            /*padding-left: 6px;*/
+        /*}*/
+        /*.magic-radio + label, .magic-checkbox + label {*/
+            /*position: relative;*/
+            /*display: block;*/
+            /*padding-left: 24px;*/
+            /*cursor: pointer;*/
+            /*vertical-align: middle;*/
+        /*}*/
     </style>
 </head>
 
@@ -47,51 +47,99 @@
                 </tr>
                 <tr>
                     <td align="right"><label><font class="" color="red">*</font>统一社会信用代码：</label></td>
-                    <td><vm-input  v-model="data.communityCode"  id=""/></td>
+                    <td>
+
+                        <div class="input-group">
+
+                            <input v-model="data.communityCode"  class="form-control data-input input-sm" id="" required/>
+                            <span class="input-group-btn">
+										<button class="btn btn-info" type="button" id="never">
+											没有<i class="fa fa-question"></i>
+										</button>
+									</span>
+                        </div>
+                    </td>
                     <td align="right"><label><font class="" color="red">*</font>法定代理人：</label></td>
-                    <td><vm-input v-model="data.representative" type="" /></td>
+                    <td><vm-input v-model="data.representative" type="" required/></td>
                 </tr>
                 <tr>
                     <td align="right"><label><font color="red">*</font>行政区域：</label></td>
                     <td>
-                        <vm-select v-model="data.area"  required :options="code.area"/>
+                        <vm-select v-model="data.area"  required :options="code.area" required/>
                     </td>
                     <td align="right"><label><font color="red">*</font>企业地址：</label></td>
                     <td>
-                        <vm-input v-model="data.location" type="" />
+                        <vm-input v-model="data.location" type="" required/>
                     </td>
                 </tr>
                 <tr>
                     <td align="right"><label><font class="" color="red">*</font>污染物类别</label></td>
-                    <td><vm-multicheck  v-model="data.pollutantLevel" :options="code.pollutantLevel"/></td>
+                    <td><vm-multicheck  v-model="data.pollutantLevel" :options="code.pollutantLevel" required/></td>
                     <td align="right"><label><font class="" color="red">*</font>重点级别：</label></td>
-                    <td width="30%"><vm-radio v-model="data.importantLevel" :options="code.importLevel" /></td>
+                    <td width="30%"><vm-radio v-model="data.importantLevel" :options="code.importLevel" required/></td>
                 </tr>
                 <tr>
-                    <td align="right"><label>行业类别：</label></td>
-                    <td><vm-input v-model="data.oldName" /></td>
-                    <td align="right"><label>是否启用：</label></td>
+                    <td align="right"><label><font color="red">*</font>行业类别：</label></td>
                     <td>
-                        <vm-select v-model="data.flag" :options="code.flag"></vm-select>
+                        <div class="input-group">
+                            <input v-model="data.type" class="form-control data-input input-sm" required/>
+                            <span class="input-group-btn">
+										<button class="btn btn-info" type="button" id="typeMa">
+											<i class ="fa">获取行业类别</i>
+										</button>
+									</span>
+                        </div>
+
+                    </td>
+                    <td align="right"><label><font color="red">*</font>是否启用：</label></td>
+                    <td>
+                        <vm-select v-model="data.flag" :options="code.flag" required></vm-select>
                     </td>
                 </tr>
                 <tr>
-                    <td align="right"><label>中心经度：</label></td>
-                    <td><vm-input v-model="data.longitude" :can-edit="canEdit"/></td>
-                    <td align="right"><label>中心纬度：</label></td>
-                    <td><vm-input v-model="data.latitude" :can-edit="canEdit"/></td>
+                    <td align="right"><label><font color="red">*</font>中心经度：</label></td>
+                    <td>
+                        <div class="input-group">
+                            <input v-model="data.longitude" class="form-control data-input input-sm" readonly="true" required/>
+                            <span class="input-group-btn">
+										<button class="btn btn-info" type="button" id="getLongitude">
+											<i class ="fa">获取经度</i>
+										</button>
+									</span>
+                        </div>
+                    </td>
+                    <td align="right"><label><font color="red">*</font>中心纬度：</label></td>
+                    <td>
+                        <div class="input-group">
+                            <input v-model="data.latitude" class="form-control data-input input-sm" readonly="true" required/>
+                            <span class="input-group-btn">
+										<button class="btn btn-info" type="button" id="getLatitude">
+											<i class ="fa">获取纬度</i>
+										</button>
+									</span>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
-                    <td align="right"><label>联系人：</label></td>
-                    <td><vm-input v-model="data.contactor" /></td>
-                    <td align="right"><label>联系人电话：</label></td>
-                    <td><vm-input v-model="data.phone" /></td>
+                    <td align="right"><label><font color="red">*</font>联系人：</label></td>
+                    <td><vm-input v-model="data.contactor" required/></td>
+                    <td align="right"><label><font color="red">*</font>联系人电话：</label></td>
+                    <td><vm-input v-model="data.phone" required/></td>
                 </tr>
                 <tr>
-                    <td align="right"><label>2019重点排污单位：</label></td>
-                    <td><vm-input v-model="data.keyPolluters" :can-edit="canEdit"/></td>
+                    <td align="right"><label><font color="red">*</font>2019重点排污单位：</label></td>
+                    <td>
+                        <vm-select v-model="data.keyPolluters"  />
+                        <div class="input-group">
+                            <span class="input-group-btn">
+										<button class="btn btn-info" type="button" id="iskeyPolluters">
+											<i class ="fa">是否重点排污单位历史记录</i>
+										</button>
+									</span>
+                        </div>
+                    </td>
                     <td align="right"><label>开工日期：</label></td>
-                    <td><vm-input v-model="data.officePhone" :can-edit="canEdit"/></td>
+                    <td><vm-input v-model="data.officePhone" readonly="true"/></td>
                 </tr>
                 <tr>
                     <td align="right"><label>电子邮箱：</label></td>
@@ -184,24 +232,14 @@
             this.loadData();
         },
         methods:{
-            //部门选择
-            selectDepartment:function(){
-                var _this = this;
-                $.CommonData.data.officeSelect({
-                    'onConfirm':function(selectData){
-                        Vue.set(_this.data,"officeId",selectData.id);
-                        Vue.set(_this.data,"officeName",selectData.name);
-                    },queryParam:{"officeId":vmData.data.officeId }
-                });
-            },
             //加载数据
             loadData:function(){
                 if(id){
                     $.get(_ctx + "/sys/enterprise/data/"+id,{},function(msg){
                         if(msg.status==1){
                             vmData.data=msg.data;
-                            var pollutantLevel = msg.data.pollutantLevel;
-
+                            //var pollutantLevel = msg.data.pollutantLevel;
+                            msg.data.pollutantLevel = msg.data.pollutantLevel.split(";");
                         }else{
                             layer.error("用户数据加载错误");
                         }
@@ -209,7 +247,7 @@
                     });
                 }else{
                     //设置默认的数据
-                    Vue.set(this,"data",{area:"越秀",flag:1,importLevel:"国控",sex:"男"});
+                    Vue.set(this,"data",{area:"越秀",flag:1,importLevel:"国控"});
                 }
             },
             //提交表单
@@ -224,10 +262,12 @@
             saveEnterprise:function(){
                 var _this = this;
                 var p=/^(?![^a-zA-Z]+$)(?!\D+$).{8,20}$/;
+                //将数组转换为字符串
+                vmData.data.pollutantLevel=vmData.data.pollutantLevel.join(";");
                 var json = JSON.stringify(vmData.data);
                 var loadingIndex=layer.load();
                 $.ajax({
-                    url : _ctx + "/sys/enterprise/save",
+                    url : _ctx + "/sys/enterprise/save" ,
                     data : json,
                     type : "post",
                     contentType : "application/json",
@@ -251,6 +291,8 @@
                         layer.error("保存失败："+msg.message);
                     }
                 });
+                //后面为了显示正常，将字符串继续转化位数组
+                vmData.data.pollutantLevel=vmData.data.pollutantLevel.split(";");
             }
         }
     });
@@ -259,7 +301,7 @@
     $(window).on("resize",resizeWindow);
 
     function resizeWindow(){
-        $("#userForm").height($(window).height()-80);
+        $("#enterpriseForm").height($(window).height()-80);
     }
 </script>
 </html>

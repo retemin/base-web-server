@@ -56,6 +56,7 @@ public interface BaseRestfulController<T> extends BaseCurdListController<T> {
 	@ResponseBody
 	@Override
 	default ResponseMessage save(@RequestBody T data) {
+
 		return BaseCurdListController.super.save(data);
 	}
 

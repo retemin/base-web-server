@@ -24,4 +24,5 @@ public class SysEnterprisePageController {
         model.addAttribute("id",id);
         return "/modules/sys/enterpriseForm";
     }
+
 }

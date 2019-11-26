@@ -41,7 +41,6 @@ public class EnterpriseServiceImpl implements BaseMapperCurdService<Enterprise>,
 
     @Override
     public void afterPropertiesSet() throws Exception {
-
     }
 
     //暂时只查询全部信息

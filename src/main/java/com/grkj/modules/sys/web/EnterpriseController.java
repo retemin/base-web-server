@@ -49,7 +49,7 @@ public class EnterpriseController implements BaseRestfulController<Enterprise>{
         service.updateFlag(id, flag);
         return ResponseMessage.newOkInstance(id);
     }
-    //重写保存方法 加密密码
+    //重写保存方法
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
     public ResponseMessage save(@RequestBody Enterprise enterprise) {

@@ -5,13 +5,206 @@
   Time: 9:31
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html>
 <head>
-    <title>Title</title>
+    <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+    <jsp:include page="/WEB-INF/views/include/base-include.jsp">
+        <jsp:param name="include" value="base,metronic,vuejs2,layer,jquery-validation" />
+    </jsp:include>
+    <style type="text/css">
+        form{
+            margin-top:8px;
+        }
+        /*.col-sm-3 {*/
+        /*width: 25%;*/
+        /*position: relative;*/
+        /*min-height: 2px;*/
+        /*padding-right: 5px;*/
+        /*padding-left: 6px;*/
+        /*}*/
+        /*.magic-radio + label, .magic-checkbox + label {*/
+        /*position: relative;*/
+        /*display: block;*/
+        /*padding-left: 24px;*/
+        /*cursor: pointer;*/
+        /*vertical-align: middle;*/
+        /*}*/
+    </style>
 </head>
-<body>
-    这是一个表单
 
+<body class="hidden-x">
+<div>
+    <div class="col-sm-12 text-right">
+        <form class="form-horizontal" id="outletlForm" @submit="submitForm">
+            <table class="table table-bordered">
+                <tr>
+                    <td width="20%" align="right"><label><font color="red">*</font>企业编码：</label></td>
+                    <td width="30%"><vm-input v-model="data.id" id="id" required  /></td>
+                    <td width="20%" align="right"><label><font color="red">*</font>排口名称：</label></td>
+                    <td width="30%"><vm-input v-model="data.outletlname" required/></td>
+                </tr>
+                <tr>
+                    <td align="right"><label><font color="red">*</font>类型：</label></td>
+                    <td>
+                        <vm-select v-model="data.type"  required :options="code.type"></vm-select>
+                    </td>
+                    <td align="right"><label><font color="red">*</font>是否启用：</label></td>
+                    <td>
+                        <vm-select v-model="data.flag"  required :options="code.flag"></vm-select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><label><font color="red">*</font>数采仪序号：</label></td>
+                    <td>
+                        <vm-input v-model="data.instrumentid" type="" required/>
+                    </td>
+                    <td align="right"><label>数采仪密码：</label></td>
+                    <td>
+                        <vm-input v-model="data.instrumentpwd" type="" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><label>监控点位置：</label></td>
+                    <td>
+                        <vm-input v-model="data.monitorypoint" type="" />
+                    </td>
+                    <td align="right"><label>排口编号：</label></td>
+                    <td>
+                        <vm-input v-model="data.outletlid" type="" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><label>经度：</label></td>
+                    <td>
+                        <div class="input-group">
+                            <input v-model="data.longitude" class="form-control data-input input-sm" readonly="true" />
+                            <span class="input-group-btn">
+										<button class="btn btn-info" type="button" id="getLongitude">
+											<i class ="fa">获取经度</i>
+										</button>
+									</span>
+                        </div>
+                    </td>
+                    <td align="right"><label>纬度：</label></td>
+                    <td>
+                        <div class="input-group">
+                            <input v-model="data.latitude" class="form-control data-input input-sm" readonly="true" />
+                            <span class="input-group-btn">
+										<button class="btn btn-info" type="button" id="getLatitude">
+											<i class ="fa">获取纬度</i>
+										</button>
+									</span>
+                        </div>
+                    </td>
+                </tr>
+
+
+            </table>
+            <div class="footFixToolbar" style="margin-bottom: 10px;">
+                <button class="btn btn-info" type="submit" id="saveOutletl"><i class="fa fa-save fa-fw"></i>保存</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-warning closeNowLayer" type="button" id="cancel"><i class="fa fa-close fa-fw"></i>关闭</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="officeTreeFrame" style="display: none">
+    <div class="ztree" id="officeTree"></div>
+</div>
 </body>
+<script type="text/javascript">
+    var id="${id}";
+    var treeObj=null;
+    var vmData={
+        data:{},
+        code:{
+            flag:[
+                {value:"1",name:"是"},
+                {value:"0",name:"否"}
+            ],
+            type:[
+                {value:"废气",name:"废气"},
+                {value:"废水",name:"废水"},
+                {value:"VOCs",name:"VOCs"},
+                {value:"油烟",name:"油烟"}
+            ]
+        },
+        canEdit:"false"
+    }
+    var vm = new Vue({
+        el : "#outletlForm",
+        data :vmData,
+        mounted:function(){
+            this.loadData();
+        },
+        methods:{
+            //加载数据
+            loadData:function(){
+                if(id){
+                    $.get(_ctx + "/sys/outletl/data/"+id,function(msg){
+                        if(msg.status==1){
+                            vmData.data=msg.data;
+                        }else{
+                            layer.error("用户数据加载错误");
+                        }
+
+                    });
+                }else{
+                    //设置默认的数据
+                    Vue.set(this,"data",{flag:1});
+                }
+            },
+            //提交表单
+            submitForm:function(e){
+                e.preventDefault();
+                if($("#outletlForm").valid()){
+                    this.saveOutletl();
+                }
+                return false;
+            },
+            //保存数据
+            saveOutletl:function(){
+                var _this = this;
+                var json = JSON.stringify(vmData.data);
+                var loadingIndex=layer.load();
+                $.ajax({
+                    url : _ctx + "/sys/outletl/save" ,
+                    data : json,
+                    type : "post",
+                    contentType : "application/json",
+                    success : function(msg) {
+                        layer.close(loadingIndex);
+                        if(msg.status==1){
+                            layer.success("保存成功",{time:1000});
+                            if(id){
+                                _this.reloadData();
+                            }else{
+                                layer.closeAll();
+                                top.layer.closeAll();
+                                top.layer.msg("添加成功");
+                            }
+                        }else{
+                            layer.error("保存失败："+msg.message);
+                        }
+                    },
+                    error : function(msg) {
+                        layer.close(loadingIndex);
+                        layer.error("保存失败："+msg.message);
+                    }
+                });
+            }
+        }
+    });
+
+    resizeWindow();
+    $(window).on("resize",resizeWindow);
+
+    function resizeWindow(){
+        $("#outletlForm").height($(window).height()-80);
+    }
+</script>
 </html>
+

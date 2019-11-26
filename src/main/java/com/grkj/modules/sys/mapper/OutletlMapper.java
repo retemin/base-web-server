@@ -13,4 +13,5 @@ public interface OutletlMapper extends Mapper<Outletl> {
     List<Outletl> getOutletList(Map<String,String> param);
    // Integer deleteOutletlById(String OutletlId);
     Integer updateTime(String time,String id);
+    Outletl getOutletlById(String id);
 }

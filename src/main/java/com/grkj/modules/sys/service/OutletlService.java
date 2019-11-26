@@ -10,8 +10,9 @@ import edu.princeton.cs.algs4.Out;
 import java.util.List;
 
 public interface OutletlService  extends CurdService<Outletl> {
+    Outletl getoutletlById(String id);
     List<Outletl>  getOutletList(Object param);
     PageResponseMessage getListPage(PageRequestMessage pageParam, Object param);
     void updateFlag(String id, String flag);
-
+    void updateTime(String Time,String id);
 }

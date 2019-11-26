@@ -20,6 +20,7 @@ public class Outletl implements Serializable {
     private String type;
 
     private String outletlname;
+    @Transient
     private String updateTime;
     //是否启用
     private String flag;

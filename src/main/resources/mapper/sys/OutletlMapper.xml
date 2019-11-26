@@ -24,16 +24,16 @@
 
         <where>
             <if test="name!=null and name!=''">
-                AND  ename like #{name}
+                AND  ename like  '%${name}%'
             </if>
             <if test="type!=null and type!=''">
                 AND otype = #{type}
             </if>
             <if test="outletlName!=null and outletlName!=''">
-                AND outletlname like #{outletlName}
+                AND outletlname like '%${outletlName}%'
             </if>
             <if test="instrumentId!=null and instrumentId!=''">
-                AND instrumentid like #{instrumentId}
+                AND instrumentid like '%${instrumentId}%'
             </if>
 
         </where>
@@ -46,4 +46,7 @@
     <update id="updateTime" parameterType="java.lang.String">
         update SYS_ENTERPRISE set  UPDATE_TIME = #{time} where ID = #{id}
     </update>
+    <select id="getOutletlById" parameterType="java.lang.String" resultType="com.grkj.modules.sys.entity.Outletl">
+        select * from SYS_OUTLETL where id = #{id}
+    </select>
 </mapper>

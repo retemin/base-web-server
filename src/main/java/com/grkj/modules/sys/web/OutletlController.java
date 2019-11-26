@@ -2,6 +2,8 @@ package com.grkj.modules.sys.web;
 
 import com.grkj.common.base.BaseRestfulController;
 import com.grkj.common.base2.core.CurdService;
+import com.grkj.common.base2.impl.controller.BaseCurdListController;
+import com.grkj.lib.message.code.ResponseCode;
 import com.grkj.lib.message.entity.ResponseMessage;
 import com.grkj.lib.mybatis.page.MessagePageHelper;
 import com.grkj.lib.page.entity.PageRequestMessage;
@@ -11,6 +13,7 @@ import com.grkj.modules.sys.entity.Outletl;
 import com.grkj.modules.sys.service.OutletlService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,4 +53,18 @@ public class OutletlController implements BaseRestfulController<Outletl> {
         outletlService.updateFlag(id, flag);
         return ResponseMessage.newOkInstance(id);
     }
+
+    //重写获取指定id排口好
+    @ApiOperation("根据业务id获取数据")
+    @GetMapping(value="data/{id}", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    @Override
+    public ResponseMessage getById(@ApiParam(value="业务主键") @PathVariable() String id) {
+        System.out.println(id);
+        String status = ResponseCode.STATUS_OK;
+        String msg="获取成功";
+        ResponseMessage res = new ResponseMessage(status,outletlService.getoutletlById(id),msg);
+        return res;
+    }
+
 }

@@ -67,7 +67,7 @@ public class EnterpriseServiceImpl implements BaseMapperCurdService<Enterprise>,
             if(!StringUtils.isBlank(name)){
                 cr.andLike("name", "%"+name+"%");
             }
-            if(!StringUtils.isBlank(name)){
+            if(!StringUtils.isBlank(operation)){
                 cr.andLike("operation", "%"+operation+"%");
             }
             if(!StringUtils.isBlank(type)){
@@ -80,7 +80,7 @@ public class EnterpriseServiceImpl implements BaseMapperCurdService<Enterprise>,
                 cr.andEqualTo("importantLevel", importantLevel);
             }
         }
-        return mapper.selectByExample(example);
+        return getMapper().selectByExample(example);
     }
 
     //继承实现方法，可以直接使用注解的mapper

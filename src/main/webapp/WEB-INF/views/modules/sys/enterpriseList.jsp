@@ -151,7 +151,7 @@
                     var operation = $("#search_operation").val();
                     //console.log("loginName:"+loginName);
                     //绑定搜索数据
-                    tableObj.setGridParam({postData:{'id':id,'name':name,'type':type,'area':area,'importantLevel':importantLevel,"opeartion":operation},page:1});
+                    tableObj.setGridParam({postData:{'id':id,'name':name,'type':type,'area':area,'importantLevel':importantLevel,"operation":operation},page:1});
                     tableObj.trigger("reloadGrid");
                 });
             });

@@ -219,14 +219,6 @@
 <body class="">
 <div class="col-xs-12 search-form">
     <form action="" class="form form-inline " id="searchForm" >
-        <%--<div class="form-group">--%>
-        <%--<label class="col-sm-4 control-label text-right">作用域:</label>--%>
-        <%--<div class="col-sm-8"><vm-select v-model="search.scope" :options="code.scope"/></div>--%>
-        <%--</div>--%>
-        <%--<div class="col-md-3">--%>
-        <%--<label class="col-sm-4 control-label text-right">参数名:</label>--%>
-        <%--<div class="col-sm-8"><vm-input v-model="search.config"></div>--%>
-        <%--</div>--%>
         <div class="form-group">
             <label>企业名称:</label>
             <input class="form-control input-sm"  style="width: 120px;" id="search_name" >

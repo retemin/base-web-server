@@ -31,6 +31,14 @@ public class OutletlServiceImpl implements BaseMapperCurdService<Outletl>,Outlet
 
     @Autowired
     private OutletlMapper mapper;
+    //根据id查询排口信息
+    @Override
+    public Outletl getoutletlById(String id) {
+        Outletl o ;
+        o = mapper.getOutletlById(id);
+        return o;
+    }
+
     @Override
     public List<Outletl> getOutletList(Object param) {
         //传入查询条件param，进行查询
@@ -52,6 +60,12 @@ public class OutletlServiceImpl implements BaseMapperCurdService<Outletl>,Outlet
         outletl.setFlag(flag);
         updateSelective(outletl);
         //更新时间
+        String string = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString();
+        mapper.updateTime(string,id);
+    }
+
+    @Override
+    public void updateTime(String Time,String id) {
         String string = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString();
         mapper.updateTime(string,id);
     }

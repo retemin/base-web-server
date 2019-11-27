@@ -60,7 +60,45 @@
             height:20px;
             margin-right: 10px;
         }
-
+        .switch-wrap input[type=checkbox]{
+            height: 0px;
+            width: 0px;
+            visibility: hidden;
+            margin:0;
+            padding:0;
+        }
+        .switch-wrap label{
+            display: inline-block;
+            width: 49px;
+            height: 30px;
+            border: 1px solid #DFDFDF;
+            outline: none;
+            border-radius: 16px;
+            box-sizing: border-box;
+            background: #FFFFFF;
+            cursor: pointer;
+            transition: border-color .3s,background-color .3s;
+            vertical-align: middle;
+            position: relative;
+        }
+        .switch-wrap label::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 0.3s;
+            width: 27px;
+            height: 27px;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+            background-color: #fff;
+        }
+        .switch-wrap input:checked + label {
+            background: #33DB70;
+        }
+        .switch-wrap input:checked + label:before {
+            transform: translateX(20px);
+        }
     </style>
     <script type="text/javascript">
         var tableObj=null;
@@ -85,10 +123,26 @@
                     {name: "phone",index: "phone",align: "center",width: 70},
                     {name: "operation",index: "operation",align: "center",width: 70},
                     {name: "updateTime",index: "updateTime",align: "center",width: 70},
-                    {name: "flag",index: "flag",align: "center",width: 60,
+                    {name: "flag",index: "flag",align: "center",width: 60,isExport:false,
                         formatter:function(cellValue,options,rowObject){
-                            // var statusIcon = "<input class='easyui-switchbutton' onText='开' offText='关' name='unitState' >";
-                            var statusIcon="<i class=\"fa fa-"+(cellValue==1?"toggle-on text-primary":"toggle-off text-warning")+"\"></i>";
+                            var pkid = rowObject.id;
+                            var name = rowObject.name;
+                            var flag= rowObject.flag;
+                            /**
+                             *  <div class='switch-wrap'>
+                             <input type='checkbox' id= 'switch'>
+                             <label for='switch'></label>
+                             </div>*/
+                            var statusIcon="";
+                            if(flag==1){
+                                /**
+                                 * checkbox的样式，使用label将原来的样式覆盖掉，然后使用for来触发选择按钮，关于id，必须使用不同列的id，这样才能根据不同列显示
+                                 * 不同的id，由于pkid可能已经被其他元素用到，那么加一个前缀使他生效
+                                 * */
+                                statusIcon += "<div class='switch-wrap' > <input  type='checkbox'  id='sw_"+pkid+"' class='checkChkbox' checked='true' onchange=\"updateFlag('"+pkid+"','"+name+"',0)\"> <label for='sw_"+pkid+"'></label> </div>";
+                            }else {
+                                statusIcon += "<div class='switch-wrap'> <input  type='checkbox' id='sw_"+pkid+"' class='checkChkbox' onchange=\"updateFlag('" + pkid + "','" + name + "',1)\">  <label for='sw_"+pkid+"' ></label> </div>";
+                            }
                             return statusIcon;
                         }
                     },
@@ -96,16 +150,9 @@
                         formatter:function(cellValue,options,rowObject){
                             var pkid = rowObject.id;
                             var name = rowObject.name;
-                            var flag= rowObject.flag;
                             var button = "<a href='javascript:void(0);' class='text-info' onclick=\"openForm('"+pkid+"')\">[<span class=\"fa fa-edit fa-fw\" aria-hidden=\"true\"></span>修改] </a>";
-
                             //删除按钮
                             button += "<a href='javascript:void(0);' class='text-danger' onclick=\"deleteItem('"+pkid+"','"+name+"')\">[<span class=\"fa fa-trash fa-fw\" aria-hidden=\"true\"></span>删除] </a>";
-                            if(flag==1){
-                                button += "<a href='javascript:void(0);' class='text-warning' onclick=\"updateFlag('"+pkid+"','"+name+"',0)\">[<span class=\"fa fa-ban fa-fw\" aria-hidden=\"true\"></span>禁用] </a>";
-                            }else{
-                                button += "<a href='javascript:void(0);' class='text-primary' onclick=\"updateFlag('"+pkid+"','"+name+"',1)\">[<span class=\"fa fa-check-circle-o fa-fw\" aria-hidden=\"true\"></span>启用] </a>";
-                            }
                             button += "<a href='javascript:void(0);' class='text-primary' onclick=\"ManagerItem('"+pkid+"','"+name+"')\">[<span class=\"fa fa-cog fa-fw\" aria-hidden=\"true\"></span>排口管理] </a>";
                             return button;
                         }

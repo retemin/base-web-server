@@ -307,7 +307,7 @@
 						onLoad:function(){},
 						onCancel:function(){},
 						layerParam:{},
-						url:_ctx+'paramCode/tradeSelect?1',
+						url:_ctx+'/paramCode/tradeSelect?1',
 						title: "选择行业类型",
 						isMulti:false
 				}

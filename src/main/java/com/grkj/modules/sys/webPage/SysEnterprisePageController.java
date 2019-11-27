@@ -22,7 +22,12 @@ public class SysEnterprisePageController {
     @RequestMapping("form/{id}")
     public String form(@PathVariable String id, Model model) {
         model.addAttribute("id",id);
-        return "/modules/sys/enterpriseForm";
+        return "modules/sys/enterpriseForm";
+    }
+
+    @RequestMapping(value = "map",method = RequestMethod.GET )
+    public String goMap(){
+        return "modules/sys/map";
     }
 
 }

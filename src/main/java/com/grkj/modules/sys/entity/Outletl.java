@@ -31,6 +31,7 @@ public class Outletl implements Serializable {
     private String latitude;
     private String outletlid;
     @Transient
+    //企业名称
     private String ename;
 
     public String getUpdateTime() {

@@ -13,24 +13,11 @@
     <jsp:include page="/WEB-INF/views/include/base-include.jsp">
         <jsp:param name="include" value="base,metronic,vuejs2,layer,jquery-validation" />
     </jsp:include>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=pTxRk6K3ykP2lXYEGfsCbpbUfZbKlliK"></script>
     <style type="text/css">
         form{
             margin-top:8px;
         }
-        /*.col-sm-3 {*/
-            /*width: 25%;*/
-            /*position: relative;*/
-            /*min-height: 2px;*/
-            /*padding-right: 5px;*/
-            /*padding-left: 6px;*/
-        /*}*/
-        /*.magic-radio + label, .magic-checkbox + label {*/
-            /*position: relative;*/
-            /*display: block;*/
-            /*padding-left: 24px;*/
-            /*cursor: pointer;*/
-            /*vertical-align: middle;*/
-        /*}*/
     </style>
 </head>
 
@@ -84,7 +71,7 @@
                         <div class="input-group">
                             <input v-model="data.type" class="form-control data-input input-sm" required/>
                             <span class="input-group-btn">
-										<button class="btn btn-info" type="button" id="typeMa">
+										<button class="btn btn-info" type="button" id="typeMa" @click="getLei">
 											<i class ="fa">获取行业类别</i>
 										</button>
 									</span>
@@ -99,10 +86,10 @@
                 <tr>
                     <td align="right"><label><font color="red">*</font>中心经度：</label></td>
                     <td>
-                        <div class="input-group">
+                        <div class="input-group" >
                             <input v-model="data.longitude" class="form-control data-input input-sm" readonly="true" required/>
                             <span class="input-group-btn">
-										<button class="btn btn-info" type="button" id="getLongitude">
+										<button class="btn btn-info" type="button" id="getLongitudeBtn" @click="getLongitude">
 											<i class ="fa">获取经度</i>
 										</button>
 									</span>
@@ -113,7 +100,7 @@
                         <div class="input-group">
                             <input v-model="data.latitude" class="form-control data-input input-sm" readonly="true" required/>
                             <span class="input-group-btn">
-										<button class="btn btn-info" type="button" id="getLatitude">
+										<button class="btn btn-info" type="button" id="getLatitudeBtn" >
 											<i class ="fa">获取纬度</i>
 										</button>
 									</span>
@@ -127,7 +114,7 @@
                     <td><vm-input v-model="data.phone" required/></td>
                 </tr>
                 <tr>
-                    <td align="right"><label><font color="red">*</font>2019重点排污单位：</label></td>
+                    <td align="right"><label></font>2019重点排污单位：</label></td>
                     <td>
                         <vm-select v-model="data.keyPolluters"  />
                         <div class="input-group">
@@ -153,22 +140,6 @@
                     <td align="right"><label>传真：</label></td>
                     <td><vm-input v-model="data.fax" /></td>
                 </tr>
-                <%--<tr>--%>
-                    <%--<td align="right"><label>部门：</label></td>--%>
-                    <%--<td>--%>
-                        <%--<div class="input-group">--%>
-                            <%--<input v-model="data.officeId" class="hidden"/>--%>
-                            <%--<input v-model="data.officeName" class="form-control data-input input-sm" readonly="readonly"/>--%>
-                            <%--<span class="input-group-btn">--%>
-										<%--<button class="btn btn-info" type="button" id="selectDepartmentBtn" @click="selectDepartment">--%>
-											<%--<i class="glyphicon glyphicon-search"></i>--%>
-										<%--</button>--%>
-									<%--</span>--%>
-                        <%--</div>--%>
-                    <%--</td>--%>
-                    <%--<td align="right"><label>职务：</label></td>--%>
-                    <%--<td><vm-input v-model="data.duty"></td>--%>
-                <%--</tr>--%>
                 <tr>
                     <td align="right"><label>排序编号：</label></td>
                     <td><vm-input v-model="data.sortid"/></td>
@@ -176,7 +147,6 @@
                     <td><vm-input v-model="data.remark" /></td>
                 </tr>
             </table>
-            <%--<div v-show="id!=''" class="text-danger text-left">请注意：不修改密码，保留密码为空即可！</div>--%>
             <div class="footFixToolbar" style="margin-bottom: 10px;">
                 <button class="btn btn-info" type="submit" id="saveEnterprise"><i class="fa fa-save fa-fw"></i>保存</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -189,6 +159,8 @@
 <div id="officeTreeFrame" style="display: none">
     <div class="ztree" id="officeTree"></div>
 </div>
+<%--先将地图定义起来 然后使用--%>
+<div id='allmap' style='width: 100%; height: 100%; position: absolute; display: none'></div>
 </body>
 <script type="text/javascript">
     var id="${id}";
@@ -229,17 +201,71 @@
         el : "#enterpriseForm",
         data :vmData,
         mounted:function(){
+            //初始化调用百度地图
+            this.initMap();
             this.loadData();
         },
         methods:{
+            //获取经度
+            getLongitude:function(){
+                // top.layer.open({
+                //         type: 2,
+                //         title: [(id?"编辑":"新建")+"企业排口信息","font-size:18px;"],
+                //         content:_ctx+"/sys/enterprise/map",
+                //         area: ["1024px", "700px"],
+                //         closeBtn : 2,
+                //         end :function(){
+                //             tableObj.trigger("reloadGrid");
+                //         }
+                //  })
+                layer.open({
+                    type: 1,
+                    title: ["百度地图","font-size:18px;"],
+                    area: ["90%", "90%"],
+                    content:$('#allmap'),
+                    closeBtn : 2
+
+                });
+            },
+            //初始化地图
+            initMap:function(){
+                map = new BMap.Map("allmap");
+                geoc = new BMap.Geocoder();  //地址解析对象
+                markersArray = [];
+                var geolocation = new BMap.Geolocation();
+                //var point = new BMap.Point(116.331398, 39.897445);
+                map.centerAndZoom("广州", 12); // 中心点
+                geolocation.getCurrentPosition(function (r) {
+                    if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                        var mk = new BMap.Marker(r.point);
+                        map.addOverlay(mk);
+                        map.panTo(r.point);
+                        map.enableScrollWheelZoom(true);
+                    }
+                    else {
+                        alert('failed' + this.getStatus());
+                    }
+                }, {enableHighAccuracy: true})
+                map.addEventListener("click", showInfo);
+
+            },
+            //获取行业信息
+            getLei:function(){
+                var _this = this;
+                $.CommonData.data.tradeSelect({
+                    'onConfirm':function(selectData){
+                        Vue.set(_this.data,"type",selectData.type);
+                    },queryParam:{"officeId":vmData.data.officeId }
+                });
+            },
             //加载数据
             loadData:function(){
+
                 if(id){
                     $.get(_ctx + "/sys/enterprise/data/"+id,{},function(msg){
                         if(msg.status==1){
                             vmData.data=msg.data;
-                            //var pollutantLevel = msg.data.pollutantLevel;
-                            msg.data.pollutantLevel = msg.data.pollutantLevel.split(";");
+                            vmData.data.pollutantLevel=vmData.data.pollutantLevel.split(";");
                         }else{
                             layer.error("用户数据加载错误");
                         }
@@ -247,7 +273,9 @@
                     });
                 }else{
                     //设置默认的数据
-                    Vue.set(this,"data",{area:"越秀",flag:1,importLevel:"国控"});
+                    Vue.set(this,"data",{area:"越秀",flag:1,importLevel:"国控",pollutantLevel:""});
+                    //将污染物类比我分隔成数组，这样才能在多选框中显示
+                    vmData.data.pollutantLevel=vmData.data.pollutantLevel.split(";");
                 }
             },
             //提交表单
@@ -302,6 +330,39 @@
 
     function resizeWindow(){
         $("#enterpriseForm").height($(window).height()-80);
+    }
+    //清除标识
+    function clearOverlays() {
+        if (markersArray) {
+            for (i in markersArray) {
+                map.removeOverlay(markersArray[i])
+            }
+        }
+    }
+    //地图上标注
+    function addMarker(point) {
+        var marker = new BMap.Marker(point);
+        markersArray.push(marker);
+        clearOverlays();
+        map.addOverlay(marker);
+    }
+    //点击地图时间处理
+    function showInfo(e) {
+        //先将数据添加到表单中
+        Vue.set(vmData.data,"longitude",e.point.lng);
+        Vue.set(vmData.data,"latitude",e.point.lat);
+        geoc.getLocation(e.point, function (rs) {
+            var addComp = rs.addressComponents;
+            var address = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+            layer.confirm("确定要地址是" + address + "?",
+                {
+                    btn: ['确定','取消'] //按钮
+                }, function () {
+                    Vue.set(vmData.data,"location",address);
+                    layer.closeAll();
+                })
+        });
+        addMarker(e.point);
     }
 </script>
 </html>

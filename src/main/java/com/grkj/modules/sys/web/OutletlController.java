@@ -40,12 +40,21 @@ public class OutletlController implements BaseRestfulController<Outletl> {
     public CurdService<Outletl> getService() {
         return outletlService;
     }
+
+    @Override
+    public void checkKey(Outletl data) {
+
+    }
+
     //重写
     @ApiOperation("jqgrid格式列表分页查询")
     @GetMapping(value="/jqgrid",produces = "application/json;charset=UTF-8")
     @ResponseBody
     public PageResponseMessage listJqgrid(PageRequestMessage pageParam, ServletRequest request) {
+        String id = (String)request.getAttribute("id");
         Map<String, Object> param = MessagePageHelper.getNotPageParam(request);
+        System.out.println("OutleltController "+id);
+        param.put("id",id);
         return outletlService.getListPage(pageParam,param);
     }
     @RequestMapping(value = "/updateFlag/{id}", method = RequestMethod.POST)
@@ -54,7 +63,7 @@ public class OutletlController implements BaseRestfulController<Outletl> {
         return ResponseMessage.newOkInstance(id);
     }
 
-    //重写获取指定id排口好
+    //重写获取指定id排口号
     @ApiOperation("根据业务id获取数据")
     @GetMapping(value="data/{id}", produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -66,5 +75,39 @@ public class OutletlController implements BaseRestfulController<Outletl> {
         ResponseMessage res = new ResponseMessage(status,outletlService.getoutletlById(id),msg);
         return res;
     }
+    @ApiOperation("根据企业id来查询排口信息")
+    @GetMapping(value="/listOutletl/{id}",produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public PageResponseMessage getlistOutletlById(@PathVariable() String id, PageRequestMessage pageParam, ServletRequest request){
+        System.out.println("getlistOutLetlByd "+id);
+        request.setAttribute("id",id);
+        String newid = request.getParameter("id");
 
+        return listJqgrid(pageParam, request);
+    }
+//
+    @ApiOperation("保存数据，空数据会覆盖")
+    @PostMapping(value="save",produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    @Override
+    public  ResponseMessage save(@RequestBody Outletl data) {
+        outletlService.insertOutletl(data);
+        return ResponseMessage.newOkInstance(data);
+    }
+    @ApiOperation("修改数据")
+    @PostMapping(value="update",produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ResponseMessage update(@RequestBody Outletl data) {
+        outletlService.insertOrUpdate(data);
+        return ResponseMessage.newOkInstance(data);
+    }
+
+    //重写删除接口
+    @ApiOperation("根据排口id删除数据")
+    @RequestMapping(value="delete/{outletlid}",produces = "application/json;charset=UTF-8",method = {RequestMethod.DELETE,RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    @Override
+    public ResponseMessage delete(@ApiParam(value="业务主键") @PathVariable()String outletlid) {
+        return ResponseMessage.newOkInstance(outletlService.deleteOutletlByid(outletlid));
+    }
 }

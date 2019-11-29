@@ -71,6 +71,19 @@ public class OutletlServiceImpl implements BaseMapperCurdService<Outletl>,Outlet
     }
 
     @Override
+    public void insertOutletl(Outletl outletl) {
+        String string = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString();
+        updateTime(string,outletl.getId());
+        mapper.insertOutletl(outletl);
+    }
+
+    @Override
+    public Integer deleteOutletlByid(String outletlid) {
+        //进行删除操作
+        return mapper.deleteByOutletlId(outletlid);
+    }
+
+    @Override
     public Mapper<Outletl> getMapper() {
         return mapper;
     }

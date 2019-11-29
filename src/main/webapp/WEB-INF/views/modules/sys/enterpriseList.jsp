@@ -221,7 +221,8 @@
 
         }
         function ManagerItem(id){
-            url=_ctx+"/sys/outletl/form/"+(id?id:"");
+            console.log(id);
+            url=_ctx+"/sys/outletl/listOutletlPage/"+(id?id:"");
             top.layer.open({
                 type: 2,
                 title: [(id?"编辑":"新建")+"企业排口信息","font-size:18px;"],

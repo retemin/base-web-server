@@ -206,46 +206,39 @@
             this.loadData();
         },
         methods:{
-            //获取经度
+            //获取经纬度时打开一个弹窗，弹窗的内容显示百度地图
             getLongitude:function(){
-                // top.layer.open({
-                //         type: 2,
-                //         title: [(id?"编辑":"新建")+"企业排口信息","font-size:18px;"],
-                //         content:_ctx+"/sys/enterprise/map",
-                //         area: ["1024px", "700px"],
-                //         closeBtn : 2,
-                //         end :function(){
-                //             tableObj.trigger("reloadGrid");
-                //         }
-                //  })
                 layer.open({
                     type: 1,
                     title: ["百度地图","font-size:18px;"],
                     area: ["90%", "90%"],
-                    content:$('#allmap'),
-                    closeBtn : 2
-
+                    content:$('#allmap')
                 });
             },
             //初始化地图
             initMap:function(){
+                //创建map实例
                 map = new BMap.Map("allmap");
                 geoc = new BMap.Geocoder();  //地址解析对象
-                markersArray = [];
+                markersArray = [];//用于保存标记
                 var geolocation = new BMap.Geolocation();
                 //var point = new BMap.Point(116.331398, 39.897445);
-                map.centerAndZoom("广州", 12); // 中心点
-                geolocation.getCurrentPosition(function (r) {
+                map.centerAndZoom("广州", 12); //中心点
+                //获取当前的地点的坐标
+                geolocation.getCurrentPosition(function (r){
                     if (this.getStatus() == BMAP_STATUS_SUCCESS) {
                         var mk = new BMap.Marker(r.point);
                         map.addOverlay(mk);
+                        //将地图上的中心点移动到指定的point上面
                         map.panTo(r.point);
+                        //设置能够滚动滑轮
                         map.enableScrollWheelZoom(true);
                     }
                     else {
                         alert('failed' + this.getStatus());
                     }
                 }, {enableHighAccuracy: true})
+                //监听点击事件，传入showInfo的函数
                 map.addEventListener("click", showInfo);
 
             },
@@ -343,14 +336,13 @@
     function addMarker(point) {
         var marker = new BMap.Marker(point);
         markersArray.push(marker);
+        //先清除标记
         clearOverlays();
+        //再添加标记
         map.addOverlay(marker);
     }
-    //点击地图时间处理
+    //点击地图时处理
     function showInfo(e) {
-        //先将数据添加到表单中
-        Vue.set(vmData.data,"longitude",e.point.lng);
-        Vue.set(vmData.data,"latitude",e.point.lat);
         geoc.getLocation(e.point, function (rs) {
             var addComp = rs.addressComponents;
             var address = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
@@ -359,6 +351,8 @@
                     btn: ['确定','取消'] //按钮
                 }, function () {
                     Vue.set(vmData.data,"location",address);
+                    Vue.set(vmData.data,"longitude",e.point.lng);
+                    Vue.set(vmData.data,"latitude",e.point.lat);
                     layer.closeAll();
                 })
         });

@@ -19,10 +19,13 @@
         (select  o.ID oid,o.TYPE otype,o.FLAG flag, o.INSTRUMENTID instrumentid,o.OUTLETLNAME outletlname,o.INSTRUMENTPWD instrumentpwd,o.MONITORYPOINT monitorypoint,
         o.OUTLETLID outletlid, o.LONGITUDE longitude,o.LATITUDE latitude,e.NAME ename,e.ID eid,e.UPDATE_TIME updateTime
         from SYS_ENTERPRISE e
-        INNER JOIN SYS_OUTLETL o
+        RIGHT JOIN SYS_OUTLETL o
         ON o.ID = e.ID)
 
         <where>
+            <if test="id!=null and id!='' ">
+                AND oid = #{id}
+            </if>
             <if test="name!=null and name!=''">
                 AND  ename like  '%${name}%'
             </if>
@@ -39,13 +42,20 @@
     order by oid desc
 
     </select>
-    <delete id="deleteOutletlById" parameterType="java.lang.String">
-  		DELETE FROM SYS_OUTLETL WHERE id=#{OutletlId}
-    </delete>
     <update id="updateTime" parameterType="java.lang.String">
         update SYS_ENTERPRISE set  UPDATE_TIME = #{time} where ID = #{id}
     </update>
     <select id="getOutletlById" parameterType="java.lang.String" resultType="com.grkj.modules.sys.entity.Outletl">
-        select * from SYS_OUTLETL where id = #{id}
+        select * from SYS_OUTLETL where OUTLETLID = #{id}
     </select>
+    <insert id="insertOutletl" parameterType="com.grkj.modules.sys.entity.Outletl">
+        insert into SYS_OUTLETL(ID,TYPE,OUTLETLID,FLAG,INSTRUMENTID,INSTRUMENTPWD,MONITORYPOINT,LONGITUDE,LATITUDE)
+        VALUES (#{id},#{type},#{outletlid},#{flag},#{instrumentid},#{instrumentpwd},#{monitorypoint},#{longitude},#{latitude})
+    </insert>
+    <delete id="deleteByOutletlId" parameterType="java.lang.String">
+        delete from SYS_OUTLETL where OUTLETLID=#{outletlid}
+    </delete>
+    <!--<update id="updateOutletFlagById" parameterType="java.lang.String">-->
+        <!--update SYS_OUTLETL SET FLAG= #{} where OUTLETLID = #{outl}-->
+    <!--</update>-->
 </mapper>

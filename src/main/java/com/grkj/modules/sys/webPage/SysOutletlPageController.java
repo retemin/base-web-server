@@ -25,9 +25,15 @@ public class SysOutletlPageController {
         return "modules/sys/outletlForm";
     }
     //修改企业排口信息页面
-    @RequestMapping("form/{id}")
-    public String updateForm(@PathVariable() String id, Model model){
-        model.addAttribute("id",id);
+    @RequestMapping("form/{outletlid}")
+    public String updateForm(@PathVariable() String outletlid, Model model){
+        model.addAttribute("id",outletlid);
         return "modules/sys/outletlForm";
+    }
+    @RequestMapping("listOutletlPage/{id}")
+    public String changeOutletl(@PathVariable() String id,Model model){
+        System.out.println("SysOutletlPageController "+id);
+        model.addAttribute("id",id);
+        return "modules/sys/outletlList";
     }
 }

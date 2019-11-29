@@ -15,4 +15,6 @@ public interface OutletlService  extends CurdService<Outletl> {
     PageResponseMessage getListPage(PageRequestMessage pageParam, Object param);
     void updateFlag(String id, String flag);
     void updateTime(String Time,String id);
+    void insertOutletl(Outletl outletl);
+    Integer deleteOutletlByid(String outletlid);
 }

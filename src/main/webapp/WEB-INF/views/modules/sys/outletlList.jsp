@@ -104,18 +104,21 @@
     <script type="text/javascript">
         var tableObj=null;
         var formIndex;
+        var id = "${id}";
+       // console.log(id);
         $(document).ready(function() {
             $.jgrid.defaults.styleUI = "Bootstrap";
 
             tableObj=$("#dataTable").jqGrid({
                 datatype : "json",
-                url : "${ctx}/sys/outletl/jqgrid",
+                url : "${ctx}/sys/outletl/listOutletl/"+id,
                 rowList : [10, 20, 50, 100],
                 mtype : "get",
                 //height:height,
-                colNames : ["ID","企业名称", "排口名称","监控点位置","类型","数采仪序号","更新时间","是否启用", "操作"],
+                colNames : ["ID","排口id","企业名称", "排口名称","监控点位置","类型","数采仪序号","更新时间","是否启用", "操作"],
                 colModel : [
                     {name: "id",index: "id",align: "center",width: 20,hidden: true},
+                    {name: "outletlid",index: "outletlid",align: "center",hidden: true},
                     {name: "ename",index: "ename",align: "center",width: 120},
                     {name: "outletlname",index: "outletlname",align: "center",width: 60},
                     {name: "monitorypoint",index: "monitorypoint",align: "center",width: 60},
@@ -127,6 +130,7 @@
                             var pkid = rowObject.id;
                             var name = rowObject.ename;
                             var flag= rowObject.flag;
+                            var outletlid = rowObject.outletlid;
                             /**
                              *  <div class='switch-wrap'>
                              <input type='checkbox' id= 'switch'>
@@ -138,9 +142,9 @@
                                  * checkbox的样式，使用label将原来的样式覆盖掉，然后使用for来触发选择按钮，关于id，必须使用不同列的id，这样才能根据不同列显示
                                  * 不同的id，由于pkid可能已经被其他元素用到，那么加一个前缀使他生效
                                  * */
-                                statusIcon += "<div class='switch-wrap' > <input  type='checkbox'  id='sw_"+pkid+"' class='checkChkbox' checked='true' onchange=\"updateFlag('"+pkid+"','"+name+"',0)\"> <label for='sw_"+pkid+"'></label> </div>";
+                                statusIcon += "<div class='switch-wrap' > <input  type='checkbox'  id='sw_"+outletlid+"' class='checkChkbox' checked='true' onchange=\"updateFlag('"+pkid+"','"+name+"',0)\"> <label for='sw_"+outletlid+"'></label> </div>";
                             }else {
-                                statusIcon += "<div class='switch-wrap'> <input  type='checkbox' id='sw_"+pkid+"' class='checkChkbox' onchange=\"updateFlag('" + pkid + "','" + name + "',1)\">  <label for='sw_"+pkid+"' ></label> </div>";
+                                statusIcon += "<div class='switch-wrap'> <input  type='checkbox' id='sw_"+outletlid+"' class='checkChkbox' onchange=\"updateFlag('" + pkid + "','" + name + "',1)\">  <label for='sw_"+outletlid+"' ></label> </div>";
                             }
                             return statusIcon;
                         }
@@ -149,17 +153,17 @@
                         formatter:function(cellValue,options,rowObject){
                             var pkid = rowObject.id;
                             var name = rowObject.ename;
-                            //var flag= rowObject.flag;
-                            var button = "<a href='javascript:void(0);' class='text-info' onclick=\"openForm('"+pkid+"')\">[<span class=\"fa fa-edit fa-fw\" aria-hidden=\"true\"></span>修改] </a>";
+                            var outletlid= rowObject.outletlid;
+                            var button = "<a href='javascript:void(0);' class='text-info' onclick=\"openForm('"+pkid+"','"+outletlid+"')\">[<span class=\"fa fa-edit fa-fw\" aria-hidden=\"true\"></span>修改] </a>";
 
                             //删除按钮
-                            button += "<a href='javascript:void(0);' class='text-danger' onclick=\"deleteItem('"+pkid+"','"+name+"')\">[<span class=\"fa fa-trash fa-fw\" aria-hidden=\"true\"></span>删除] </a>";
+                            button += "<a href='javascript:void(0);' class='text-danger' onclick=\"deleteItem('"+pkid+"','"+name+"','"+outletlid+"')\">[<span class=\"fa fa-trash fa-fw\" aria-hidden=\"true\"></span>删除] </a>";
                             // if(flag==1){
                             //     button += "<a href='javascript:void(0);' class='text-warning' onclick=\"updateFlag('"+pkid+"','"+name+"',0)\">[<span class=\"fa fa-ban fa-fw\" aria-hidden=\"true\"></span>禁用] </a>";
                             // }else{
                             //     button += "<a href='javascript:void(0);' class='text-primary' onclick=\"updateFlag('"+pkid+"','"+name+"',1)\">[<span class=\"fa fa-check-circle-o fa-fw\" aria-hidden=\"true\"></span>启用] </a>";
                             // }
-                            button += "<a href='javascript:void(0);' class='text-primary' onclick=\"ManagerItem('"+pkid+"','"+name+"')\">[<span class=\"fa fa-cog fa-fw\" aria-hidden=\"true\"></span>因子管理] </a>";
+                            button += "<a href='javascript:void(0);' class='text-primary' onclick=\"ManagerItem('"+id+"','"+name+"')\">[<span class=\"fa fa-cog fa-fw\" aria-hidden=\"true\"></span>因子管理] </a>";
                             return button;
                         }
                     }
@@ -229,12 +233,12 @@
         function ManagerItem(){
 
         }
-        function deleteItem(id,name){
-            console.log(id);
+        function deleteItem(id,name,outletlid){
+            //console.log(id);
             layer.confirm("确定删除企业排口:<span class='text-success'>"+name+"</span>?<p class='text-danger' >(删除后将无法恢复，确定要删除么？<span  class='text-warning'>[<span class=\"fa fa-ban \" aria-hidden=\"true\"></span>禁用] </span>)<p>",function(index){
                 layer.close(index);
                 var loadingIndex=layer.loadingWithText("正在提交数据");
-                $.post(_ctx+"/sys/outletl/delete/"+id,{},function(msg){
+                $.post(_ctx+"/sys/outletl/delete/"+outletlid,{},function(msg){
                     layer.close(loadingIndex);
                     if(msg.status==1){
                         layer.success("已经成功删除企业排口信息:"+name);
@@ -252,18 +256,18 @@
             tableObj.setGridHeight(height);
         }
 
-        function openForm(id){
-            url=_ctx+"/sys/outletl/form/"+(id?id:"");
+        function openForm(id,outletlid){
+            //  console.log(outletlid);
+            var url=_ctx+"/sys/outletl/form/"+(outletlid?outletlid:"");
             top.layer.open({
                 type: 2,
-                title: [(id?"编辑":"新建")+"企业排口信息","font-size:18px;"],
+                title: [(outletlid?"编辑":"新建")+"企业排口信息","font-size:18px;"],
                 content:url,
                 area: ["1024px", "700px"],
                 closeBtn : 2,
                 end :function(){
                     tableObj.trigger("reloadGrid");
                 }
-
             });
         }
 
